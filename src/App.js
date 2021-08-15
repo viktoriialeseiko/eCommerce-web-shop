@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar, Products } from './components';
+import { Navbar, Products, Cart } from './components';
 import { commerce } from './lib/commerce';
-
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 function App() {
     // console.log(process.env.REACT_APP_CHEC_PUBLIC_KEY)
@@ -27,14 +27,23 @@ function App() {
     useEffect(() => {
         fetchProducts();
         fetchCart();
-      }, []);
+    }, []);
 
     return (
-        <div>
-            <Navbar totalItems={cart.total_items} />
-            <Products products={products} onAddToCart={handleAddToCart}  />
-        </div>
-    )
+        <Router>
+            <div>
+                <Navbar totalItems={cart.total_items} />
+                <Switch>
+                    <Route exact path="/">
+                        <Products products={products} onAddToCart={handleAddToCart} />
+                    </Route>
+                    <Route exact path="/cart">
+                        <Cart cart={cart} />
+                    </Route>
+                </Switch>
+            </div>
+        </Router>
+    );
 }
 
 export default App;
